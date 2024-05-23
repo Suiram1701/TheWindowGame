@@ -8,6 +8,6 @@
         Title="The Window Game" Height="450" Width="500"
         Background="Black">
     <Canvas>
-        <gameObjects:Player x:Name="player"/>
+        <gameObjects:Player x:Name="player" Height="60" Width="60"/>
     </Canvas>
 </Window>

@@ -13,11 +13,17 @@ namespace TheWindowGame.Utilities;
 /// <summary>
 /// A manager of inputs
 /// </summary>
-public class InputManager
+internal class InputManager
 {
-    private Window _window;
+    private readonly Window _window;
 
     private readonly Collection<Key> _pressedKeys;
+
+    public static InputManager Instance { get; }
+
+    public InputManager() : this(Application.Current.MainWindow)
+    {
+    }
 
     public InputManager(Window window)
     {
@@ -26,6 +32,11 @@ public class InputManager
         _pressedKeys = [];
         _window.KeyDown += OnWindowKeyDown;
         _window.KeyUp += OnWindowKeyUp;
+    }
+
+    static InputManager()
+    {
+        Instance = new InputManager();
     }
 
     private void OnWindowKeyDown(object sender, KeyEventArgs e)

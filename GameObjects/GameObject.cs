@@ -30,6 +30,11 @@ public abstract class GameObject : UserControl
     /// </summary>
     public Vector Acceleration { get; set; }
 
+    /// <summary>
+    /// The mass of the object
+    /// </summary>
+    public double Mass { get; set; }
+
     private readonly DispatcherTimer _timer;
 
     protected GameObject()
@@ -37,6 +42,7 @@ public abstract class GameObject : UserControl
         Position = new();
         Velocity = new();
         Acceleration = new();
+        Mass = 1.0d;
 
         int interval = ((App)Application.Current).Interval;
         _timer = new(TimeSpan.FromMilliseconds(interval), DispatcherPriority.Render, OnTimerTick, Dispatcher);
@@ -76,5 +82,14 @@ public abstract class GameObject : UserControl
     public virtual void Destroy()
     {
         _timer.Stop();
+    }
+
+    /// <summary>
+    /// Applies a force to this object.
+    /// </summary>
+    /// <param name="force">The force</param>
+    public void ApplyForce(Vector force)
+    {
+        Acceleration = force / Mass;
     }
 }
