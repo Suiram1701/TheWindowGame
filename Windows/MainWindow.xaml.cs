@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using TheWindowGame.GameObjects;
 
 namespace TheWindowGame.Windows;
 
@@ -29,6 +30,9 @@ public partial class MainWindow : Window
 
     private void OnTimerTick(object? sender, EventArgs e)
     {
-
+        foreach (GameObject objects in gameArea.Children.OfType<GameObject>().ToArray())
+        {
+            objects.Update();
+        }
     }
 }

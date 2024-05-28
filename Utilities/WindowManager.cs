@@ -14,14 +14,14 @@ internal class WindowManager
 
     public static WindowManager Instance { get; }
 
-    static WindowManager()
-    {
-        Instance = new();
-    }
-
     public WindowManager()
     {
         _application = Application.Current;
+    }
+
+    static WindowManager()
+    {
+        Instance = new();
     }
 
     public MainWindow GetMainWindow()

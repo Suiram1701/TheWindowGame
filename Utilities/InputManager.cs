@@ -15,51 +15,107 @@ namespace TheWindowGame.Utilities;
 /// </summary>
 internal class InputManager
 {
-    private readonly Window _window;
-
     private readonly Collection<Key> _pressedKeys;
+    private readonly Collection<MouseButton> _pressedMouseButtons;
 
     public static InputManager Instance { get; }
 
-    public InputManager() : this(Application.Current.MainWindow)
+    public InputManager()
     {
-    }
-
-    public InputManager(Window window)
-    {
-        _window = window;
-
         _pressedKeys = [];
-        _window.KeyDown += OnWindowKeyDown;
-        _window.KeyUp += OnWindowKeyUp;
+        _pressedMouseButtons = [];
     }
 
     static InputManager()
     {
         Instance = new InputManager();
+        Instance.RegisterEvents(WindowManager.Instance.GetMainWindow());
     }
 
-    private void OnWindowKeyDown(object sender, KeyEventArgs e)
+    private void OnKeyChange(object sender, KeyEventArgs e)
     {
-        if (_pressedKeys.Contains(e.Key))
-            return;
-        _pressedKeys.Add(e.Key);
-    }
-
-    private void OnWindowKeyUp(object sender, KeyEventArgs e)
-    {
-        if (_pressedKeys.Contains(e.Key))
+        if (e.KeyStates.HasFlag(KeyStates.Down))
+        {
+            if (!_pressedKeys.Contains(e.Key))
+            {
+                _pressedKeys.Add(e.Key);
+            }
+        }
+        else
+        {
             _pressedKeys.Remove(e.Key);
+        }
+
+        e.Handled = true;
     }
 
-    /// <summary>
-    /// Unregisters the events registered to some events of the window.
-    /// </summary>
-    public void UnregisterEvents()
+    private void OnMouseButtonChange(object sender, MouseEventArgs e)
     {
-        _window.KeyDown -= OnWindowKeyDown;
-        _window.KeyUp -= OnWindowKeyUp;
+        if (e.LeftButton == MouseButtonState.Pressed)
+        {
+            _pressedMouseButtons.Add(MouseButton.Left);
+        }
+        else
+        {
+            _pressedMouseButtons.Remove(MouseButton.Left);
+        }
+
+        if (e.MiddleButton == MouseButtonState.Pressed)
+        {
+            _pressedMouseButtons.Add(MouseButton.Middle);
+        }
+        else
+        {
+            _pressedMouseButtons.Remove(MouseButton.Middle);
+        }
+
+        if (e.RightButton == MouseButtonState.Pressed)
+        {
+            _pressedMouseButtons.Add(MouseButton.Right);
+        }
+        else
+        {
+            _pressedMouseButtons.Remove(MouseButton.Right);
+        }
+
+        if (e.XButton1 == MouseButtonState.Pressed)
+        {
+            _pressedMouseButtons.Add(MouseButton.XButton1);
+        }
+        else
+        {
+            _pressedMouseButtons.Remove(MouseButton.XButton1);
+        }
+
+        if (e.XButton2 == MouseButtonState.Pressed)
+        {
+            _pressedMouseButtons.Add(MouseButton.XButton2);
+        }
+        else
+        {
+            _pressedMouseButtons.Remove(MouseButton.XButton2);
+        }
+
+        e.Handled = true;
+    }
+
+    public void RegisterEvents(Window window)
+    {
+        window.KeyDown += OnKeyChange;
+        window.KeyUp += OnKeyChange;
+        window.MouseDown += OnMouseButtonChange;
+        window.MouseUp += OnMouseButtonChange;
+    }
+
+    public void UnregisterEvents(Window window)
+    {
+        window.KeyDown -= OnKeyChange;
+        window.KeyUp -= OnKeyChange;
+        window.MouseDown -= OnMouseButtonChange;
+        window.MouseUp -= OnMouseButtonChange;
+
         _pressedKeys.Clear();
+        _pressedMouseButtons.Clear();
     }
 
     /// <summary>
@@ -91,5 +147,14 @@ internal class InputManager
             return Direction.Left;
         else
             return Direction.None;
+    }
+
+    /// <summary>
+    /// Indicates whether the fire key is pressed.
+    /// </summary>
+    /// <returns>The result.</returns>
+    public bool IsFirePressed()
+    {
+        return _pressedMouseButtons.Contains(MouseButton.Left);
     }
 }

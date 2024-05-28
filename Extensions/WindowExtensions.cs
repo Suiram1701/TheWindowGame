@@ -14,10 +14,11 @@ internal static class WindowExtensions
     /// </summary>
     /// <param name="window">The window.</param>
     /// <returns>The actual size.</returns>
-    public static Size GetActualSize(this Window window)
+    public static Size GetWindowSize(this Window window)
     {
-        double width = window.Width - 16;
-        double height = window.Height - 38;
+        // use largest available size.
+        double width = (window.ActualWidth > window.Width ? window.ActualWidth : window.Width) - 16;
+        double height = (window.ActualHeight > window.Height ? window.ActualHeight : window.Height) - 38;
         return new Size(width, height);
     }
 }

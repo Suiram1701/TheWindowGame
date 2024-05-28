@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using TheWindowGame.Utilities;
 
 namespace TheWindowGame.GameObjects;
 
@@ -35,30 +36,22 @@ public abstract class GameObject : UserControl
     /// </summary>
     public double Mass { get; set; }
 
-    private readonly DispatcherTimer _timer;
+    protected readonly ObjectManager _objectManager;
 
     protected GameObject()
     {
+        _objectManager = ObjectManager.Instance;
+
         Position = new();
         Velocity = new();
         Acceleration = new();
         Mass = 1.0d;
-
-        int interval = ((App)Application.Current).Interval;
-        _timer = new(TimeSpan.FromMilliseconds(interval), DispatcherPriority.Render, OnTimerTick, Dispatcher);
-
-        Start();
-    }
-
-    private void OnTimerTick(object? sender, EventArgs e)
-    {
-        Update();
     }
 
     /// <summary>
     /// Once called when the object initializes.
     /// </summary>
-    protected virtual void Start()
+    public virtual void Start()
     {
         Canvas.SetLeft(this, Position.X);
         Canvas.SetTop(this, Position.Y);
@@ -67,7 +60,7 @@ public abstract class GameObject : UserControl
     /// <summary>
     /// This get called on every in-game frame.
     /// </summary>
-    protected virtual void Update()
+    public virtual void Update()
     {
         Velocity += Acceleration;
         Position += Velocity;
@@ -76,12 +69,8 @@ public abstract class GameObject : UserControl
         Canvas.SetTop(this, Position.Y);
     }
 
-    /// <summary>
-    /// Destroys the object.
-    /// </summary>
     public virtual void Destroy()
     {
-        _timer.Stop();
     }
 
     /// <summary>

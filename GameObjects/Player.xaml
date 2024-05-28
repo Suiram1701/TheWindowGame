@@ -4,6 +4,19 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TheWindowGame.GameObjects"
-             mc:Ignorable="d">
-    <Ellipse Stroke="White" StrokeThickness="4"/>
+             mc:Ignorable="d"
+             d:DesignWidth="60" d:DesignHeight="60">
+    <Grid>
+        <Ellipse Stroke="White" StrokeThickness="4"/>
+        <Polyline x:Name="aimIndicator" Points="-15,12 0,0 15,12" Stroke="White" StrokeThickness="3" Margin="30,24.5,-30,-24.5">
+            <Polyline.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform CenterY="5.5"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Polyline.RenderTransform>
+        </Polyline>
+    </Grid>
 </local:GameObject>

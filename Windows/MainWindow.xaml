@@ -6,8 +6,8 @@
         xmlns:gameObjects="clr-namespace:TheWindowGame.GameObjects"
         mc:Ignorable="d"
         Title="The Window Game" Height="450" Width="500"
-        Background="Black">
-    <Canvas>
+        Background="Black" WindowStartupLocation="CenterScreen">
+    <Canvas x:Name="gameArea">
         <gameObjects:Player x:Name="player" Height="60" Width="60"/>
     </Canvas>
 </Window>
